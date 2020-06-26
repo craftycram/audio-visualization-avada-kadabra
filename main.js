@@ -61,6 +61,7 @@ function draw(){
         chime.update();
         chime.show();
     })
+    chimesArray = chimesArray.filter(chime => chime.x > 0);
 }
 
 
@@ -177,6 +178,7 @@ class Chimes{
     }
 
     update(){
+        // move circle
         if (this.y >= this.limit) {
             this.x -= this.move;
         } else {
