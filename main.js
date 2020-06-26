@@ -15,6 +15,9 @@
 
 // TODO: - Animation / Wiedergabe delayen -> Chimes Ton erklingen bei Limit
 // TODO: - Chimes Limit nach Tonhöhe
+// TODO: - luca sagen: delete elements for performance
+
+// setInterval(() => {console.log(chimesArray.length)}, 1000);
 
 let drumsSound 
 let chimesSound 
@@ -84,7 +87,8 @@ function checkBass(){
         if(directionBass > 0 && lastBassVal > 92){
             //let ball = new Ball(50, 50);
             //ball_array.push(ball);
-            
+            let chime = new Chimes(canvas.width / 2, 0, canvas.height / 2);
+            chimesArray.push(chime);
             bass.impulse();
         }
 
