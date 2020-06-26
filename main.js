@@ -13,7 +13,8 @@
  * 511 (92)
  */
 
-
+// TODO: - Animation / Wiedergabe delayen -> Chimes Ton erklingen bei Limit
+// TODO: - Chimes Limit nach Tonhöhe
 
 let drums 
 let song
@@ -77,6 +78,7 @@ function checkHH(){
         if(directionClaps > 0 && lastClapsVal > 92){
             //let ball = new Ball(50, 50);
             //ball_array.push(ball);
+            
             bass.impulse();
             let chime = new Chimes(canvas.width / 2, 0, canvas.height / 2);
             chimesArray.push(chime);
