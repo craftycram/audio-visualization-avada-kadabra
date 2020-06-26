@@ -18,6 +18,7 @@
 let drums 
 let song
 let ball_array = []
+let chimesArray = []
 
 
 function preload(){
@@ -56,6 +57,10 @@ function draw(){
         ball.update();
         ball.show();
     })
+    chimesArray.forEach(function (chime){
+        chime.update();
+        chime.show();
+    })
 }
 
 
@@ -72,6 +77,8 @@ function checkHH(){
             //let ball = new Ball(50, 50);
             //ball_array.push(ball);
             bass.impulse();
+            let chime = new Chimes(canvas.width / 2, 0, canvas.height / 2);
+            chimesArray.push(chime);
         }
 
         directionClaps = -1;
@@ -145,6 +152,36 @@ class Bass{
         let value = (this.r - this.rDefault) * 0.1
         if(this.r > this.rDefault) {
             this.r -= value;
+        }
+    }
+}
+
+class Chimes{
+    constructor(x, y, l, r = 20){
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.speed = 0.8;
+        this.move = 3;
+        this.accel = 1.1;
+        this.limit = l;
+    }
+
+    show(){
+        push();
+        stroke(100);
+        strokeWeight(3);
+        fill(255);
+        ellipse(this.x, this.y, this.r * 2);
+        pop();
+    }
+
+    update(){
+        if (this.y >= this.limit) {
+            this.x -= this.move;
+        } else {
+            this.y += this.speed;
+            this.speed += this.accel;
         }
     }
 }
