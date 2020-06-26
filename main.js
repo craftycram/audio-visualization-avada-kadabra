@@ -1,7 +1,7 @@
 
 /** 
  * left channel
- * drums.mp3
+ * drumsSound.mp3
  * Band: 43
  * peak: ca 180
  */
@@ -16,20 +16,22 @@
 // TODO: - Animation / Wiedergabe delayen -> Chimes Ton erklingen bei Limit
 // TODO: - Chimes Limit nach Tonhöhe
 
-let drums 
-let song
+let drumsSound 
+let chimesSound 
+let songSound
 let ball_array = []
 let chimesArray = []
 
 
 function preload(){
-    drums  = loadSound('tracks/drums.mp3');
-    song = loadSound('avada_kadabra.mp3');
+    drumsSound  = loadSound('tracks/drums.mp3');
+    chimesSound  = loadSound('tracks/other.mp3');
+    songSound = loadSound('avada_kadabra.mp3');
 }
 
 let canvas;
 let button;
-let clapsFft;
+let bassFft;
 
 let bass;
 
@@ -39,17 +41,21 @@ function setup(){
     button.position(10, canvas.height + 10);
     button.mousePressed(toggleSong);
 
-    drums.disconnect();
+    drumsSound.disconnect();
+    chimesSound.disconnect();
     // song.disconnect();
 
-    clapsFft = new p5.FFT()
-    clapsFft.setInput(drums);
+    bassFft = new p5.FFT()
+    bassFft.setInput(drumsSound);
+    chimesFft = new p5.FFT()
+    chimesFft.setInput(chimesSound);
 
     bass = new Bass()
 }
 function draw(){
     background(0);
-    checkHH();
+    checkBass();
+    checkChimes();
 
     bass.update();
     bass.show();
@@ -66,40 +72,62 @@ function draw(){
 }
 
 
-let lastClapsVal = 0;
-let directionClaps = 1;
+let lastBassVal = 0;
+let directionBass = 1;
 
-function checkHH(){
-    let clapsSpectrum = clapsFft.analyze();
-    // console.log(clapsSpectrum)
-    let clapsValue = clapsSpectrum[511];
-    // console.log(clapsValue);
-    if(lastClapsVal > clapsValue){
-        if(directionClaps > 0 && lastClapsVal > 92){
+function checkBass(){
+    let bassSpectrum = bassFft.analyze();
+    // console.log(bassSpectrum)
+    let bassValue = bassSpectrum[511];
+    // console.log(bassValue);
+    if(lastBassVal > bassValue){
+        if(directionBass > 0 && lastBassVal > 92){
             //let ball = new Ball(50, 50);
             //ball_array.push(ball);
             
             bass.impulse();
+        }
+
+        directionBass = -1;
+    }else{
+        directionBass = 1;
+    }
+
+    // console.log(directionBass);
+    lastBassVal = bassValue;
+}
+
+let lastChimesVal = 0;
+let directionChimes = 1;
+
+function checkChimes(){
+    let chimesSpectrum = chimesFft.analyze();
+    // console.log(bassSpectrum)
+    let chimesValue = chimesSpectrum[58];
+    // console.log(bassValue);
+    if(lastChimesVal > chimesValue){
+        if(directionChimes > 0 && lastChimesVal > 150){
+
             let chime = new Chimes(canvas.width / 2, 0, canvas.height / 2);
             chimesArray.push(chime);
         }
 
-        directionClaps = -1;
+        directionChimes = -1;
     }else{
-        directionClaps = 1;
+        directionChimes = 1;
     }
 
-    // console.log(directionClaps);
-    lastClapsVal = clapsValue;
+    // console.log(directionBass);
+    lastChimesVal = chimesValue;
 }
 
 function toggleSong(){
-    if(song.isPlaying()){
-        song.pause();
-        drums.pause();
+    if(songSound.isPlaying()){
+        songSound.pause();
+        drumsSound.pause();
     }else{
-        song.play();
-        drums.play();
+        songSound.play();
+        drumsSound.play();
     }
 }
 
