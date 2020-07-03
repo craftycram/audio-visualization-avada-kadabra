@@ -66,7 +66,7 @@ function setup(){
 function draw(){
     background(0);
     checkDrums();
-    //checkBass();
+    checkBass();
     checkChimes();
 
     bass.update();
@@ -80,7 +80,7 @@ function draw(){
         chime.update();
         chime.show();
     })
-    chimesArray = chimesArray.filter(chime => chime.x > 0);
+    chimesArray = chimesArray.filter(chime => chime.x > 0 - chime.r * 2);
 }
 
 
@@ -165,12 +165,13 @@ function checkChimes(){
 function toggleSong(){
     drumsSound.play();
     setTimeout(function(){ songSound.play(); }, 80); 
-    /*
-    if(songSound.isPlaying()){
-        songSound.pause();
-        drumsSound.pause();
+   /*
+   if(songSound.isPlaying()){
+       songSound.pause();
+       drumsSound.pause();
     }else{
         songSound.play();
+        drumsSound.play();
     }
     */
 }
