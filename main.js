@@ -66,7 +66,7 @@ function setup(){
 function draw(){
     background(0);
     checkDrums();
-    checkBass();
+    // checkBass();
     checkChimes();
 
     bass.update();
