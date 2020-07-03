@@ -17,6 +17,7 @@
 // TODO: - Chimes Limit nach Tonhöhe
 // TODO: - luca sagen: delete elements for performance
 
+// Chimes deletion in Konsole testen:
 // setInterval(() => {console.log(chimesArray.length)}, 1000);
 
 let drumsSound 
