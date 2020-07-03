@@ -13,6 +13,9 @@
  * 511 (92)
  */
 
+// bass.mp3
+// Band 6/7 - 1. peak: 155 / 2.peak: 170 - 
+
 // TODO: - Animation / Wiedergabe delayen -> Chimes Ton erklingen bei Limit
 // TODO: - Chimes Limit nach Tonhöhe
 // TODO: - luca sagen: delete elements for performance
@@ -21,6 +24,7 @@
 // setInterval(() => {console.log(chimesArray.length)}, 1000);
 
 let drumsSound 
+let bassSound 
 let chimesSound 
 let songSound
 let ball_array = []
@@ -29,12 +33,14 @@ let chimesArray = []
 
 function preload(){
     drumsSound  = loadSound('tracks/drums.mp3');
+    bassSound  = loadSound('tracks/bass.mp3');
     chimesSound  = loadSound('tracks/other.mp3');
     songSound = loadSound('avada_kadabra.mp3');
 }
 
 let canvas;
 let button;
+let drumsFft;
 let bassFft;
 
 let bass;
@@ -47,10 +53,11 @@ function setup(){
 
     drumsSound.disconnect();
     chimesSound.disconnect();
+    bassSound.disconnect();
     // song.disconnect();
 
-    bassFft = new p5.FFT()
-    bassFft.setInput(drumsSound);
+    drumsFft = new p5.FFT()
+    drumsFft.setInput(drumsSound);
     chimesFft = new p5.FFT()
     chimesFft.setInput(chimesSound);
 
@@ -58,7 +65,8 @@ function setup(){
 }
 function draw(){
     background(0);
-    checkBass();
+    checkDrums();
+    //checkBass();
     checkChimes();
 
     bass.update();
@@ -76,21 +84,49 @@ function draw(){
 }
 
 
+let lastDrumsVal = 0;
+let directionDrums = 1;
+let lastDrumsTime = 0;
+
+function checkDrums(){
+    let drumsSpectrum = drumsFft.analyze();
+    // console.log(drumsSpectrum)
+    let drumsValue = drumsSpectrum[4];
+    // console.log(drumsValue);
+    const time = getMillis();
+    if(lastDrumsVal > drumsValue){
+        if(directionDrums > 0 && lastDrumsVal > 195 && time - lastDrumsTime > 300){
+            //let ball = new Ball(50, 50);
+            //ball_array.push(ball);
+            bass.impulse();
+            lastDrumsTime = time;
+        }
+
+        directionDrums = -1;
+    }else{
+        directionDrums = 1;
+    }
+
+    // console.log(directionDrums);
+    lastDrumsVal = drumsValue;
+}
+
 let lastBassVal = 0;
 let directionBass = 1;
+let lastBassTime = 0;
 
 function checkBass(){
     let bassSpectrum = bassFft.analyze();
     // console.log(bassSpectrum)
-    let bassValue = bassSpectrum[511];
+    let bassValue = bassSpectrum[6];
     // console.log(bassValue);
+    const time = getMillis();
     if(lastBassVal > bassValue){
-        if(directionBass > 0 && lastBassVal > 92){
+        if(directionBass > 0 && lastBassVal > 150 /*&& time - lastBassTime > 300*/){
             //let ball = new Ball(50, 50);
             //ball_array.push(ball);
-            let chime = new Chimes(canvas.width / 2, 0, canvas.height / 2);
-            chimesArray.push(chime);
             bass.impulse();
+            lastBassTime = time;
         }
 
         directionBass = -1;
@@ -98,7 +134,7 @@ function checkBass(){
         directionBass = 1;
     }
 
-    // console.log(directionBass);
+    // console.log(directionDrums);
     lastBassVal = bassValue;
 }
 
@@ -107,9 +143,9 @@ let directionChimes = 1;
 
 function checkChimes(){
     let chimesSpectrum = chimesFft.analyze();
-    // console.log(bassSpectrum)
+    // console.log(drumsSpectrum)
     let chimesValue = chimesSpectrum[58];
-    // console.log(bassValue);
+    // console.log(drumsValue);
     if(lastChimesVal > chimesValue){
         if(directionChimes > 0 && lastChimesVal > 150){
 
@@ -122,21 +158,27 @@ function checkChimes(){
         directionChimes = 1;
     }
 
-    // console.log(directionBass);
+    // console.log(directionDrums);
     lastChimesVal = chimesValue;
 }
 
 function toggleSong(){
+    drumsSound.play();
+    setTimeout(function(){ songSound.play(); }, 80); 
+    /*
     if(songSound.isPlaying()){
         songSound.pause();
         drumsSound.pause();
     }else{
         songSound.play();
-        drumsSound.play();
     }
+    */
 }
 
-
+function getMillis(){
+    let d = new Date();
+    return d.getTime()
+}
 class Ball{
     constructor(x, y, r = 20){
         this.x = x;
