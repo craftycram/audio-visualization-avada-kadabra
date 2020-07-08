@@ -61,6 +61,8 @@ function setup() {
 
     drumsFft = new p5.FFT()
     drumsFft.setInput(drumsSound);
+    bassFft = new p5.FFT()
+    bassFft.setInput(bassSound);
     chimesFft = new p5.FFT()
     chimesFft.setInput(chimesSound);
 
@@ -70,7 +72,7 @@ function setup() {
 function draw() {
     background(0);
     checkDrums();
-    // checkBass();
+    checkBass();
     checkChimes();
 
     bass.update();
@@ -144,6 +146,7 @@ function checkBass() {
 
 let lastChimesVal = 0;
 let directionChimes = 1;
+let lastChimesBand = 0;
 
 function checkChimes() {
     let chimesSpectrum = chimesFft.analyze();
@@ -170,9 +173,10 @@ function checkChimes() {
     ];
     bands.forEach(element => {
         let chimesValue = chimesSpectrum[element.band];
-        if (lastChimesVal > chimesValue) {
-            if (directionChimes > 0 && lastChimesVal > element.value) {
-                let chime = new Chimes(canvas.width / 2, 0, canvas.height / 2);
+        if (lastChimesVal > chimesValue && lastChimesBand !== element.band) {
+            if (directionChimes > 0 && lastChimesVal > element.value - 10) {
+                lastChimesBand = element.band;
+                let chime = new Chimes(canvas.width / 2, 0, element.value);
                 chimesArray.push(chime);
             }
 
@@ -195,6 +199,7 @@ chimesArray.push(chime);
 function toggleSong() {
     drumsSound.play();
     chimesSound.play();
+    bassSound.play();
     setTimeout(function () {
         songSound.play();
     }, 80);
