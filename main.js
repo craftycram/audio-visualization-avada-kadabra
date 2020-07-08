@@ -144,39 +144,47 @@ function checkBass() {
 
 let lastChimesVal = 0;
 let directionChimes = 1;
-const bandsChimes = [{
-    band: 40,
-    value: 0
-},
-{
-    band: 53,
-    value: 0
-},
-{
-    band: 63,
-    value: 0
-},
-{
-    band: 79,
-    value: 0
-},
-{
-    band: 71,
-    value: 0
-}
-];
+
 function checkChimes() {
     let chimesSpectrum = chimesFft.analyze();
-    
-    bandsChimes.forEach(element => {
+    const bands = [{
+        band: 40,
+        value: 243
+    },
+    {
+        band: 53,
+        value: 213
+    },
+    {
+        band: 63,
+        value: 203
+    },
+    {
+        band: 79,
+        value: 178
+    },
+    {
+        band: 71,
+        value: 201
+    }
+    ];
+    bands.forEach(element => {
         let chimesValue = chimesSpectrum[element.band];
-        if (element.value < chimesValue) {
-            element.value = chimesValue;
-        }
-    });
-    console.log(bandsChimes);
-}
+        if (lastChimesVal > chimesValue) {
+            if (directionChimes > 0 && lastChimesVal > element.value) {
+                let chime = new Chimes(canvas.width / 2, 0, canvas.height / 2);
+                chimesArray.push(chime);
+            }
 
+            directionChimes = -1;
+        } else {
+            directionChimes = 1;
+        }
+
+        lastChimesVal = chimesValue;
+    });
+
+}
 
 /*
 let chime = new Chimes(canvas.width / 2, 0, canvas.height / 2);
