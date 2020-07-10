@@ -4,10 +4,15 @@ var spectrum = []
 let fft, song, filter;
 
 function preload(){
-  song = loadSound('tracks/other.mp3');
+  song = loadSound('avada_kadabra.mp3');
+  song.rate(1)
+  //song.panPosition = 1;
+  //song.setBuffer([song.buffer.getChannelData(1)]);
 }
 
 function setup() {
+  //song.setBuffer([song.buffer.getChannelData(0)]);
+  console.log(song);
   let cnv = createCanvas(1024,200);
   cnv.mousePressed(makeNoise);
   fill(255, 0, 255);
@@ -20,6 +25,8 @@ function setup() {
 
   fft = new p5.FFT();
 }
+
+const chimes = [];
 
 function draw() {
   background(220);
@@ -36,15 +43,22 @@ function draw() {
   // draw filtered spectrum
   let spectrum = fft.analyze();
   spectrum.splice(100, 1104);
+  spectrum.splice(0, 25);
   noStroke();
   for (let i = 0; i < spectrum.length; i++) {
     let x = map(i, 0, spectrum.length, 0, width);
     let h = -height + map(spectrum[i], 0, 255, height, 0);
+    stroke(0, 0, 0);
+    strokeWeight(1);
     rect(x, height, width/spectrum.length, h);
+    push()
+    fill(255);
+    text(i+25, x, 160);
+    pop();
     //console.log(h);
     if(-h > maxHeight){
       maxHeight = -h;
-      maxID = i;
+      maxID = i+25;
     }
   }
   console.log("Max Band: " + maxID + " has " + maxHeight);
@@ -53,8 +67,10 @@ function draw() {
 function makeNoise() {
   // see also: `userStartAudio()`
   song.play();
+  console.log("play");
 }
 
 function mouseReleased() {
   song.pause();
+  console.log("pause");
 }
