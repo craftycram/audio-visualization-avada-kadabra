@@ -75,6 +75,8 @@ function draw() {
     checkBass();
     checkChimes();
 
+    getPeaks();
+
     bass.update();
     bass.show();
 
@@ -148,35 +150,18 @@ let lastChimesVal = 0;
 let directionChimes = 1;
 let lastChimesBand = 0;
 
+const bands = [{band:40,value:240, timestamp: 0},{band:53,value:222, timestamp: 0},{band:43,value:255, timestamp: 0},{band:65,value:249, timestamp: 0},{band:58,value:253, timestamp: 0},{band:68,value:245, timestamp: 0},{band:82,value:244, timestamp: 0},{band:86,value:241, timestamp: 0},{band:79,value:194, timestamp: 0},{band:71,value:214, timestamp: 0}];
 function checkChimes() {
     let chimesSpectrum = chimesFft.analyze();
-    const bands = [{
-        band: 40,
-        value: 243
-    },
-    {
-        band: 53,
-        value: 213
-    },
-    {
-        band: 63,
-        value: 203
-    },
-    {
-        band: 79,
-        value: 178
-    },
-    {
-        band: 71,
-        value: 201
-    }
-    ];
     bands.forEach(element => {
         let chimesValue = chimesSpectrum[element.band];
         if (lastChimesVal > chimesValue && lastChimesBand !== element.band) {
-            if (directionChimes > 0 && lastChimesVal > element.value - 10) {
+            if (directionChimes > 0 && lastChimesVal > element.value - 10 && getMillis() - element.timestamp > 200) {
+                element.timestamp = getMillis();
                 lastChimesBand = element.band;
-                let chime = new Chimes(canvas.width / 2, 0, element.value);
+                const yArea = 500;
+                const yPos = map(element.value, 150, 300, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
+                let chime = new Chimes(canvas.width / 2, 0, yPos, 20, element.band, element.value);
                 chimesArray.push(chime);
             }
 
@@ -274,7 +259,7 @@ class Bass {
 }
 
 class Chimes {
-    constructor(x, y, l, r = 20) {
+    constructor(x, y, l, r = 20, b, p) {
         this.x = x;
         this.y = y;
         this.r = r;
@@ -282,13 +267,17 @@ class Chimes {
         this.move = 3;
         this.accel = 1.1;
         this.limit = l;
+        this.band = b;
+        this.peak = p;
+        this.color = color(125, 125, 125);
     }
 
     show() {
         push();
         stroke(100);
         strokeWeight(3);
-        fill(255);
+        fill(this.color);
+        noStroke();
         ellipse(this.x, this.y, this.r * 2);
         pop();
     }
@@ -297,9 +286,70 @@ class Chimes {
         // move circle
         if (this.y >= this.limit) {
             this.x -= this.move;
+            this.color.setAlpha(map(this.x, canvas.width/2,0, 255,0));
+            fill(this.color);
         } else {
             this.y += this.speed;
             this.speed += this.accel;
         }
     }
+}
+
+const bandsCheck = [{
+    band: 40,
+    value: 0
+},
+{
+    band: 53,
+    value: 0
+},
+{
+    band: 43,
+    value: 0
+},
+{
+    band: 65,
+    value: 0
+},
+{
+    band: 58,
+    value: 0
+},
+{
+    band: 68,
+    value: 0
+},
+{
+    band: 82,
+    value: 0
+},
+{
+    band: 86,
+    value: 0
+},
+{
+    band: 63,
+    value: 0
+},
+{
+    band: 79,
+    value: 0
+},
+{
+    band: 71,
+    value: 0
+}
+];
+function getPeaks() {
+    let chimesSpectrum = chimesFft.analyze();
+    
+    bandsCheck.forEach(element => {
+        let chimesValue = chimesSpectrum[element.band];
+        if (element.value < chimesValue) {
+            element.value = chimesValue;
+        }
+
+        lastChimesVal = chimesValue;
+    });
+
 }
