@@ -161,7 +161,7 @@ function checkChimes() {
                 lastChimesBand = element.band;
                 const yArea = 500;
                 const yPos = map(element.value, 150, 300, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
-                let chime = new Chimes(canvas.width / 2, 0, yPos, 20, element.band, element.value);
+                let chime = new Chimes(canvas.width - 200, 0, yPos, 20, element.band, element.value);
                 chimesArray.push(chime);
             }
 
@@ -269,7 +269,7 @@ class Chimes {
         this.limit = l;
         this.band = b;
         this.peak = p;
-        this.color = color(125, 125, 125);
+        this.color = color('#6E9AFF');
     }
 
     show() {
