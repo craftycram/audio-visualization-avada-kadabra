@@ -98,15 +98,31 @@ function draw() {
 
 
 let lastDrumsVal = 0;
+let lastClapsVal = 0;
 let directionDrums = 1;
 let lastDrumsTime = 0;
+let lastClapsTime = 0;
 
 function checkDrums() {
+    time = getMillis();
+    
+    
     let drumsSpectrum = drumsFft.analyze();
     // console.log(drumsSpectrum)
+    let clapsValue = drumsSpectrum[195];
+    if (lastClapsVal > clapsValue && time - lastClapsTime > 300) {
+        if (lastClapsVal > 0) {
+            chimesArray.forEach((chime) => {
+                // Glockenspiele mit Claps manipulieren.
+                chime.r -= 1;
+            })
+            lastClapsTime = time;
+        }
+    }
+    lastClapsVal = clapsValue;
+    
     let drumsValue = drumsSpectrum[4];
     // console.log(drumsValue);
-    const time = getMillis();
     if (lastDrumsVal > drumsValue) {
         if (directionDrums > 0 && lastDrumsVal > 195 && time - lastDrumsTime > 300) {
             //let ball = new Ball(50, 50);
