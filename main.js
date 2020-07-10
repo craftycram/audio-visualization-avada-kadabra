@@ -18,10 +18,8 @@
 // Band 6/7 - 1. peak: 155 / 2.peak: 170 - 
 
 // TODO: - Animation / Wiedergabe delayen -> Chimes Ton erklingen bei Limit
-// TODO: - Chimes Limit nach Tonhöhe
-// TODO: - luca sagen: delete elements for performance
-
-// TODO: - Luca: Problem Bass und Drums gleichzeitig
+// TODO: @Luca bass kleinerer halb so groß wie großer
+// TODO: sind die nach tonhöhe
 
 // Chimes deletion in Konsole testen:
 // setInterval(() => {console.log(chimesArray.length)}, 1000);
@@ -47,6 +45,8 @@ let drumsFft;
 let bassFft;
 
 let bass;
+let drums;
+let bassColor;
 
 function setup() {
     canvas = createCanvas(1920, 1080);
@@ -66,7 +66,9 @@ function setup() {
     chimesFft = new p5.FFT()
     chimesFft.setInput(chimesSound);
 
-    bass = new Bass()
+    bassColor = color('#ededed');
+    bass = new Bass();
+    drums = new Drums();
 }
 
 function draw() {
@@ -79,6 +81,9 @@ function draw() {
 
     bass.update();
     bass.show();
+
+    drums.update();
+    drums.show();
 
     ball_array.forEach(function (ball) {
         ball.update();
@@ -106,7 +111,7 @@ function checkDrums() {
         if (directionDrums > 0 && lastDrumsVal > 195 && time - lastDrumsTime > 300) {
             //let ball = new Ball(50, 50);
             //ball_array.push(ball);
-            bass.impulse();
+            drums.impulse();
             lastDrumsTime = time;
         }
 
@@ -159,8 +164,9 @@ function checkChimes() {
             if (directionChimes > 0 && lastChimesVal > element.value - 10 && getMillis() - element.timestamp > 200) {
                 element.timestamp = getMillis();
                 lastChimesBand = element.band;
-                const yArea = 500;
-                const yPos = map(element.value, 150, 300, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
+                const yArea = 800;
+                //const yPos = map(element.value, 150, 300, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
+                const yPos = map(element.band, 30, 100, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
                 let chime = new Chimes(canvas.width - 200, 0, yPos, 20, element.band, element.value);
                 chimesArray.push(chime);
             }
@@ -228,12 +234,15 @@ class Ball {
 }
 
 class Bass {
-    constructor(r = 900) {
+    constructor(r = 850) {
         this.x = canvas.width / 2;
         this.y = canvas.height / 2;
-        this.r = r;
+        this.r1 = r;
+        this.r2 = r;
         this.rDefault = 900;
         this.sizing = 10;
+        this.color = bassColor;
+
     }
 
     show() {
@@ -241,7 +250,56 @@ class Bass {
         //stroke(125);
         noStroke();
         strokeWeight(3);
-        fill(225);
+        this.color.setAlpha(200);
+        fill(this.color);
+        ellipse(this.x, this.y, this.r1 * 2 + 50);
+        pop();
+        
+        push();
+        //stroke(125);
+        noStroke();
+        strokeWeight(3);
+        this.color.setAlpha(150);
+        fill(this.color);
+        ellipse(this.x, this.y, this.r2 * 2 + 100);
+        pop();
+    }
+
+    impulse() {
+        this.r1 += 30;
+        this.r2 += 30;
+    }
+
+    update() {
+        let value1 = (this.r1 - this.rDefault) * 0.1
+        if (this.r1 > this.rDefault) {
+            this.r1 -= value1;
+        }
+        let value2 = (this.r2 - this.rDefault) * 0.1
+        if (this.r2 > this.rDefault) {
+            this.r2 -= value2;
+        }
+    }
+}
+
+class Drums {
+    constructor(r = 900) {
+        this.x = canvas.width / 2;
+        this.y = canvas.height / 2;
+        this.r = r;
+        this.rDefault = 900;
+        this.sizing = 10;
+        this.color = bassColor;
+
+    }
+
+    show() {
+        push();
+        //stroke(125);
+        noStroke();
+        strokeWeight(3);
+        this.color.setAlpha(255);
+        fill(this.color);
         ellipse(this.x, this.y, this.r * 2);
         pop();
     }
