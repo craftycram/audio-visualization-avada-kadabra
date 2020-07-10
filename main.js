@@ -105,22 +105,24 @@ let lastClapsTime = 0;
 
 function checkDrums() {
     time = getMillis();
-    
-    
+
+
     let drumsSpectrum = drumsFft.analyze();
     // console.log(drumsSpectrum)
     let clapsValue = drumsSpectrum[195];
     if (lastClapsVal > clapsValue && time - lastClapsTime > 300) {
         if (lastClapsVal > 0) {
-            chimesArray.forEach((chime) => {
-                // Glockenspiele mit Claps manipulieren.
-                chime.r -= 1;
-            })
+
+            // Glockenspiele mit Claps manipulieren.
+            const chimeId = Math.floor(Math.random() * chimesArray.length);
+            chimesArray[chimeId].color = color('#1B2640');
+            chimesArray[chimeId].clap = true;
+
             lastClapsTime = time;
         }
     }
     lastClapsVal = clapsValue;
-    
+
     let drumsValue = drumsSpectrum[4];
     // console.log(drumsValue);
     if (lastDrumsVal > drumsValue) {
@@ -171,7 +173,48 @@ let lastChimesVal = 0;
 let directionChimes = 1;
 let lastChimesBand = 0;
 
-const bands = [{band:40,value:240, timestamp: 0},{band:53,value:222, timestamp: 0},{band:43,value:255, timestamp: 0},{band:65,value:249, timestamp: 0},{band:58,value:253, timestamp: 0},{band:68,value:245, timestamp: 0},{band:82,value:244, timestamp: 0},{band:86,value:241, timestamp: 0},{band:79,value:194, timestamp: 0},{band:71,value:214, timestamp: 0}];
+const bands = [{
+    band: 40,
+    value: 240,
+    timestamp: 0
+}, {
+    band: 53,
+    value: 222,
+    timestamp: 0
+}, {
+    band: 43,
+    value: 255,
+    timestamp: 0
+}, {
+    band: 65,
+    value: 249,
+    timestamp: 0
+}, {
+    band: 58,
+    value: 253,
+    timestamp: 0
+}, {
+    band: 68,
+    value: 245,
+    timestamp: 0
+}, {
+    band: 82,
+    value: 244,
+    timestamp: 0
+}, {
+    band: 86,
+    value: 241,
+    timestamp: 0
+}, {
+    band: 79,
+    value: 194,
+    timestamp: 0
+}, {
+    band: 71,
+    value: 214,
+    timestamp: 0
+}];
+
 function checkChimes() {
     let chimesSpectrum = chimesFft.analyze();
     bands.forEach(element => {
@@ -270,7 +313,7 @@ class Bass {
         fill(this.color);
         ellipse(this.x, this.y, this.r1 * 2 + 50);
         pop();
-        
+
         push();
         //stroke(125);
         noStroke();
@@ -344,6 +387,8 @@ class Chimes {
         this.band = b;
         this.peak = p;
         this.color = color('#6E9AFF');
+        this.clap = false;
+        this.clapVal = 0;
     }
 
     show() {
@@ -352,7 +397,7 @@ class Chimes {
         strokeWeight(3);
         fill(this.color);
         noStroke();
-        ellipse(this.x, this.y, this.r * 2);
+        ellipse(this.x, this.y, (this.r + this.clapVal) * 2);
         pop();
     }
 
@@ -360,63 +405,72 @@ class Chimes {
         // move circle
         if (this.y >= this.limit) {
             this.x -= this.move;
-            this.color.setAlpha(map(this.x, canvas.width/2,0, 255,0));
+            this.color.setAlpha(map(this.x, canvas.width / 2, 0, 255, 0));
             fill(this.color);
         } else {
             this.y += this.speed;
             this.speed += this.accel;
         }
+
+        // clap pulse
+        if(this.clap) {
+            this.clapVal = 20;
+            this.clap = false;
+        } else {
+            this.clapVal = 0;
+        }
     }
 }
 
 const bandsCheck = [{
-    band: 40,
-    value: 0
-},
-{
-    band: 53,
-    value: 0
-},
-{
-    band: 43,
-    value: 0
-},
-{
-    band: 65,
-    value: 0
-},
-{
-    band: 58,
-    value: 0
-},
-{
-    band: 68,
-    value: 0
-},
-{
-    band: 82,
-    value: 0
-},
-{
-    band: 86,
-    value: 0
-},
-{
-    band: 63,
-    value: 0
-},
-{
-    band: 79,
-    value: 0
-},
-{
-    band: 71,
-    value: 0
-}
+        band: 40,
+        value: 0
+    },
+    {
+        band: 53,
+        value: 0
+    },
+    {
+        band: 43,
+        value: 0
+    },
+    {
+        band: 65,
+        value: 0
+    },
+    {
+        band: 58,
+        value: 0
+    },
+    {
+        band: 68,
+        value: 0
+    },
+    {
+        band: 82,
+        value: 0
+    },
+    {
+        band: 86,
+        value: 0
+    },
+    {
+        band: 63,
+        value: 0
+    },
+    {
+        band: 79,
+        value: 0
+    },
+    {
+        band: 71,
+        value: 0
+    }
 ];
+
 function getPeaks() {
     let chimesSpectrum = chimesFft.analyze();
-    
+
     bandsCheck.forEach(element => {
         let chimesValue = chimesSpectrum[element.band];
         if (element.value < chimesValue) {
