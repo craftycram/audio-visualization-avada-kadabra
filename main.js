@@ -275,7 +275,7 @@ class Bass {
         if (this.r1 > this.rDefault) {
             this.r1 -= value1;
         }
-        let value2 = (this.r2 - this.rDefault) * 0.1
+        let value2 = (this.r2 - this.rDefault) * 0.09
         if (this.r2 > this.rDefault) {
             this.r2 -= value2;
         }
