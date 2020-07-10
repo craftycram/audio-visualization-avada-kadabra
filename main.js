@@ -166,7 +166,7 @@ function checkChimes() {
                 lastChimesBand = element.band;
                 const yArea = 800;
                 //const yPos = map(element.value, 150, 300, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
-                const yPos = map(element.band, 30, 100, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
+                const yPos = map(element.band, 40, 100, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
                 let chime = new Chimes(canvas.width - 200, 0, yPos, 20, element.band, element.value);
                 chimesArray.push(chime);
             }
