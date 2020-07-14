@@ -1,26 +1,3 @@
-/** 
- * left channel
- * drumsSound.mp3
- * Band: 43
- * peak: ca 180
- */
-/**m
- * Bass: 43, 20
- */
-/**
- * bass 270 (100)
- * 511 (92)
- */
-
-// Chimes 31, 40, 50, 53
-
-// bass.mp3
-// Band 6/7 - 1. peak: 155 / 2.peak: 170 - 
-
-// TODO: - Animation / Wiedergabe delayen -> Chimes Ton erklingen bei Limit
-// TODO: @Luca bass kleinerer halb so groß wie großer
-// TODO: sind die nach tonhöhe
-
 // Chimes deletion in Konsole testen:
 // setInterval(() => {console.log(chimesArray.length)}, 1000);
 
@@ -78,7 +55,7 @@ function draw() {
     checkChimes();
 
     
-    getPeaks();
+    // getPeaks();
     
     bass.update();
     bass.show();
@@ -224,7 +201,6 @@ function checkDrums() {
             drums.impulse();
             lastDrumsTime = time;
             drumsCounter++;
-            console.log(drumsCounter);
 
         }
 
@@ -280,7 +256,7 @@ function checkChimes() {
                 const yArea = 500;
                 //const yPos = map(element.value, 150, 300, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
                 const yPos = map(element.band, 20, 110, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
-                let chime = new Chimes(canvas.width - 200, element.value - 600, yPos, 20, element.band, element.value);
+                let chime = new Chimes(canvas.width - 200, 0, yPos, 20, element.band, element.value);
                 chimesArray.push(chime);
             }
 
