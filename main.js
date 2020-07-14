@@ -203,10 +203,12 @@ function checkDrums() {
     if (lastClapsVal > clapsValue && time - lastClapsTime > 500) {
         if (lastClapsVal > 100) {
 
-            // Glockenspiele mit Claps manipulieren.
-            const chimeId = Math.floor(Math.random() * chimesArray.length);
-            chimesArray[chimeId].color = color('#1B2640');
-            chimesArray[chimeId].clap = true;
+            if(chimesArray !== undefined) {
+                // Glockenspiele mit Claps manipulieren.
+                const chimeId = Math.floor(Math.random() * chimesArray.length);
+                chimesArray[chimeId].color = color('#1B2640');
+                chimesArray[chimeId].clap = true;
+            }
 
             lastClapsTime = time;
         }
