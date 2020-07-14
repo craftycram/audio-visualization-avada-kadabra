@@ -133,7 +133,18 @@ function drawViolin() {
         strokeWeight(3);
         fill(100);
         text(drumsCounter, 10, 20);
-        line(1200, 800, 1200+20, 800-20);
+        const xStart = 900;
+        const yStart = 800;
+
+        line(xStart, yStart, xStart+20, yStart-20);
+        line(xStart + 20, yStart, xStart+40, yStart-20);
+        line(xStart + 40, yStart, xStart+60, yStart-20);
+
+        line(xStart + 80, yStart-10, xStart+100, yStart-30);
+
+        line(xStart + 110, yStart+20, xStart+130, yStart);
+        
+        line(xStart + 160, yStart-30, xStart+180, yStart-50);
         pop();
     }
     if (drumsCounter >59) {
@@ -142,7 +153,21 @@ function drawViolin() {
         strokeWeight(3);
         fill(100);
         text(drumsCounter, 10, 20);
-        line(1500, 800, 1500+20, 800-20);
+        const xStart = 1200;
+        const yStart = 800;
+
+        line(xStart + 40, yStart-10, xStart+60, yStart-30);
+
+        line(xStart + 80, yStart, xStart+100, yStart-20);
+
+        line(xStart + 120, yStart-10, xStart+140, yStart-30);
+        
+        line(xStart + 160, yStart, xStart+180, yStart-20);
+
+
+        line(xStart + 200, yStart+20, xStart+240, yStart - 10);
+
+
         pop();
     }
     if (drumsCounter >76) {
@@ -151,7 +176,18 @@ function drawViolin() {
         strokeWeight(3);
         fill(100);
         text(drumsCounter, 10, 20);
-        line(1800, 800, 1800+20, 800-20);
+        const xStart = 1500;
+        const yStart = 800;
+
+        line(xStart, yStart, xStart+20, yStart-20);
+        line(xStart + 20, yStart, xStart+40, yStart-20);
+        line(xStart + 40, yStart, xStart+60, yStart-20);
+
+        line(xStart + 80, yStart-10, xStart+100, yStart-30);
+
+        line(xStart + 110, yStart+20, xStart+130, yStart);
+        
+        line(xStart + 160, yStart-30, xStart+180, yStart-50);
         pop();
     }
 }
