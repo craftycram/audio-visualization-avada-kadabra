@@ -203,7 +203,7 @@ function checkDrums() {
     if (lastClapsVal > clapsValue && time - lastClapsTime > 500) {
         if (lastClapsVal > 100) {
 
-            if(chimesArray !== undefined) {
+            if(chimesArray.length > 0) {
                 // Glockenspiele mit Claps manipulieren.
                 const chimeId = Math.floor(Math.random() * chimesArray.length);
                 chimesArray[chimeId].color = color('#1B2640');
