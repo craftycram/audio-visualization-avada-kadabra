@@ -4,7 +4,7 @@
  * Band: 43
  * peak: ca 180
  */
-/**
+/**m
  * Bass: 43, 20
  */
 /**
@@ -102,16 +102,18 @@ let lastClapsVal = 0;
 let directionDrums = 1;
 let lastDrumsTime = 0;
 let lastClapsTime = 0;
+let drumsCounter = 0;
 
 function checkDrums() {
     time = getMillis();
 
 
     let drumsSpectrum = drumsFft.analyze();
-    // console.log(drumsSpectrum)
-    let clapsValue = drumsSpectrum[195];
-    if (lastClapsVal > clapsValue && time - lastClapsTime > 300) {
-        if (lastClapsVal > 0) {
+    //console.log(drumsSpectrum)
+    let clapsValue = drumsSpectrum[325];
+    // console.log(drumsSpectrum[325])
+    if (lastClapsVal > clapsValue && time - lastClapsTime > 500) {
+        if (lastClapsVal > 100) {
 
             // Glockenspiele mit Claps manipulieren.
             const chimeId = Math.floor(Math.random() * chimesArray.length);
@@ -131,6 +133,9 @@ function checkDrums() {
             //ball_array.push(ball);
             drums.impulse();
             lastDrumsTime = time;
+            drumsCounter++;
+            console.log(drumsCounter);
+
         }
 
         directionDrums = -1;
@@ -172,48 +177,7 @@ function checkBass() {
 let lastChimesVal = 0;
 let directionChimes = 1;
 let lastChimesBand = 0;
-
-const bands = [{
-    band: 40,
-    value: 240,
-    timestamp: 0
-}, {
-    band: 53,
-    value: 222,
-    timestamp: 0
-}, {
-    band: 43,
-    value: 255,
-    timestamp: 0
-}, {
-    band: 65,
-    value: 249,
-    timestamp: 0
-}, {
-    band: 58,
-    value: 253,
-    timestamp: 0
-}, {
-    band: 68,
-    value: 245,
-    timestamp: 0
-}, {
-    band: 82,
-    value: 244,
-    timestamp: 0
-}, {
-    band: 86,
-    value: 241,
-    timestamp: 0
-}, {
-    band: 79,
-    value: 194,
-    timestamp: 0
-}, {
-    band: 71,
-    value: 214,
-    timestamp: 0
-}];
+const bands = [{band:32,value:230,timestamp: 0},{band:34,value:255,timestamp: 0},{band:40,value:247,timestamp: 0},{band:43,value:255,timestamp: 0},{band:54,value:246,timestamp: 0},{band:58,value:249,timestamp: 0},{band:61,value:249,timestamp: 0},{band:65,value:244,timestamp: 0},{band:68,value:244,timestamp: 0},{band:73,value:245,timestamp: 0},{band:77,value:244,timestamp: 0},{band:82,value:236,timestamp: 0},{band:86,value:234,timestamp: 0},{band:92,value:233,timestamp: 0},{band:97,value:226,timestamp: 0}];
 
 function checkChimes() {
     let chimesSpectrum = chimesFft.analyze();
@@ -223,10 +187,10 @@ function checkChimes() {
             if (directionChimes > 0 && lastChimesVal > element.value - 10 && getMillis() - element.timestamp > 200) {
                 element.timestamp = getMillis();
                 lastChimesBand = element.band;
-                const yArea = 800;
+                const yArea = 500;
                 //const yPos = map(element.value, 150, 300, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
-                const yPos = map(element.band, 40, 100, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
-                let chime = new Chimes(canvas.width - 200, 0, yPos, 20, element.band, element.value);
+                const yPos = map(element.band, 20, 110, canvas.height / 2 + yArea, canvas.height / 2 - yArea);
+                let chime = new Chimes(canvas.width - 200, element.value - 600, yPos, 20, element.band, element.value);
                 chimesArray.push(chime);
             }
 
@@ -247,12 +211,12 @@ chimesArray.push(chime);
 
 
 function toggleSong() {
-    drumsSound.play();
     chimesSound.play();
-    bassSound.play();
     setTimeout(function () {
+        drumsSound.play();
         songSound.play();
-    }, 80);
+        bassSound.play();
+    }, 40);
     /*
     if(songSound.isPlaying()){
         songSound.pause();
@@ -423,11 +387,15 @@ class Chimes {
 }
 
 const bandsCheck = [{
-        band: 40,
+        band: 32,
         value: 0
     },
     {
-        band: 53,
+        band: 34,
+        value: 0
+    },
+    {
+        band: 40,
         value: 0
     },
     {
@@ -435,7 +403,7 @@ const bandsCheck = [{
         value: 0
     },
     {
-        band: 65,
+        band: 54,
         value: 0
     },
     {
@@ -443,7 +411,23 @@ const bandsCheck = [{
         value: 0
     },
     {
+        band: 61,
+        value: 0
+    },
+    {
+        band: 65,
+        value: 0
+    },
+    {
         band: 68,
+        value: 0
+    },
+    {
+        band: 73,
+        value: 0
+    },
+    {
+        band: 77,
         value: 0
     },
     {
@@ -455,15 +439,11 @@ const bandsCheck = [{
         value: 0
     },
     {
-        band: 63,
+        band: 92,
         value: 0
     },
     {
-        band: 79,
-        value: 0
-    },
-    {
-        band: 71,
+        band: 97,
         value: 0
     }
 ];

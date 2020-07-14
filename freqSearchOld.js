@@ -41,7 +41,7 @@ function draw() {
   // draw filtered spectrum
   let spectrum = fft.analyze();
   //spectrum.splice(100, 1104);
-  spectrum.splice(0, 25);
+  // spectrum.splice(0, 25);
   noStroke();
   for (let i = 0; i < spectrum.length; i++) {
     let x = map(i, 0, spectrum.length, 0, width);
