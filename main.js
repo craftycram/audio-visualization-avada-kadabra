@@ -77,14 +77,15 @@ function draw() {
     checkBass();
     checkChimes();
 
+    
     getPeaks();
-
+    
     bass.update();
     bass.show();
-
+    
     drums.update();
     drums.show();
-
+    
     ball_array.forEach(function (ball) {
         ball.update();
         ball.show();
@@ -94,6 +95,8 @@ function draw() {
         chime.show();
     })
     chimesArray = chimesArray.filter(chime => chime.x > 0 - chime.r * 2);
+    
+    drawViolin();
 }
 
 
@@ -103,6 +106,55 @@ let directionDrums = 1;
 let lastDrumsTime = 0;
 let lastClapsTime = 0;
 let drumsCounter = 0;
+
+function drawViolin() {
+    // 16 32 45 59 77
+    if (drumsCounter >15) {
+        push();
+        stroke(0);
+        strokeWeight(3);
+        fill(100);
+        text(drumsCounter, 10, 20);
+        line(300, 800, 300+20, 800-20);
+        pop();
+    }
+    if (drumsCounter >31) {
+        push();
+        stroke(0);
+        strokeWeight(3);
+        fill(100);
+        text(drumsCounter, 10, 20);
+        line(600, 800, 600+20, 800-20);
+        pop();
+    }
+    if (drumsCounter >44) {
+        push();
+        stroke(0);
+        strokeWeight(3);
+        fill(100);
+        text(drumsCounter, 10, 20);
+        line(1200, 800, 1200+20, 800-20);
+        pop();
+    }
+    if (drumsCounter >59) {
+        push();
+        stroke(0);
+        strokeWeight(3);
+        fill(100);
+        text(drumsCounter, 10, 20);
+        line(1500, 800, 1500+20, 800-20);
+        pop();
+    }
+    if (drumsCounter >76) {
+        push();
+        stroke(0);
+        strokeWeight(3);
+        fill(100);
+        text(drumsCounter, 10, 20);
+        line(1800, 800, 1800+20, 800-20);
+        pop();
+    }
+}
 
 function checkDrums() {
     time = getMillis();
