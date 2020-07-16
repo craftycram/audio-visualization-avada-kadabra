@@ -86,7 +86,7 @@ let drumsCounter = 0;
 
 function drawViolin() {
     // 16 32 45 59 77
-    if (drumsCounter >15) {
+    if (drumsCounter >15) { // 15
         push();
         stroke(0);
         strokeWeight(3);
@@ -95,7 +95,7 @@ function drawViolin() {
         line(300, 800, 300+20, 800-20);
         pop();
     }
-    if (drumsCounter >31) {
+    if (drumsCounter >31) { // 31
         push();
         stroke(0);
         strokeWeight(3);
@@ -104,7 +104,7 @@ function drawViolin() {
         line(600, 800, 600+20, 800-20);
         pop();
     }
-    if (drumsCounter >44) {
+    if (drumsCounter >44) { // 44
         push();
         stroke(0);
         strokeWeight(3);
@@ -124,7 +124,7 @@ function drawViolin() {
         line(xStart + 160, yStart-30, xStart+180, yStart-50);
         pop();
     }
-    if (drumsCounter >59) {
+    if (drumsCounter >59) { // 59
         push();
         stroke(0);
         strokeWeight(3);
@@ -147,7 +147,7 @@ function drawViolin() {
 
         pop();
     }
-    if (drumsCounter >76) {
+    if (drumsCounter >76) { // 76
         push();
         stroke(0);
         strokeWeight(3);
