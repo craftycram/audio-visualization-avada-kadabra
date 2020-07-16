@@ -86,85 +86,85 @@ let drumsCounter = 0;
 
 function drawViolin() {
     // 16 32 45 59 77
-    if (drumsCounter >15) { // 15
+    if (drumsCounter >0) { // 15
         push();
         stroke(0);
         strokeWeight(3);
         fill(100);
         text(drumsCounter, 10, 20);
-        line(300, 800, 300+20, 800-20);
+        line(100, 800, 100+320, 800-620);
         pop();
     }
-    if (drumsCounter >31) { // 31
+    if (drumsCounter >0) { // 31
         push();
         stroke(0);
         strokeWeight(3);
         fill(100);
         text(drumsCounter, 10, 20);
-        line(600, 800, 600+20, 800-20);
+        line(400, 800, 400+320, 800-620);
         pop();
     }
-    if (drumsCounter >44) { // 44
+    if (drumsCounter >0) { // 44
         push();
         stroke(0);
         strokeWeight(3);
         fill(100);
         text(drumsCounter, 10, 20);
-        const xStart = 900;
+        const xStart = 700;
         const yStart = 800;
 
-        line(xStart, yStart, xStart+20, yStart-20);
-        line(xStart + 20, yStart, xStart+40, yStart-20);
-        line(xStart + 40, yStart, xStart+60, yStart-20);
+        line(xStart, yStart, xStart+300, yStart-600);
+        line(xStart + 20, yStart, xStart+330, yStart-620);
+        line(xStart + 40, yStart, xStart+360, yStart-620);
 
-        line(xStart + 80, yStart-10, xStart+100, yStart-30);
+        line(xStart + 80, yStart-10, xStart+400, yStart-630);
 
-        line(xStart + 110, yStart+20, xStart+130, yStart);
+        line(xStart + 110, yStart+20, xStart+530, yStart-600);
         
-        line(xStart + 160, yStart-30, xStart+180, yStart-50);
+        line(xStart + 160, yStart-30, xStart+580, yStart-650);
         pop();
     }
-    if (drumsCounter >59) { // 59
+    if (drumsCounter >0) { // 59
         push();
         stroke(0);
         strokeWeight(3);
         fill(100);
         text(drumsCounter, 10, 20);
-        const xStart = 1200;
+        const xStart = 1000;
         const yStart = 800;
 
-        line(xStart + 40, yStart-10, xStart+60, yStart-30);
+        line(xStart + 40, yStart-10, xStart+360, yStart-630);
 
-        line(xStart + 80, yStart, xStart+100, yStart-20);
+        line(xStart + 80, yStart, xStart+400, yStart-620);
 
-        line(xStart + 120, yStart-10, xStart+140, yStart-30);
+        line(xStart + 120, yStart-10, xStart+440, yStart-630);
         
-        line(xStart + 160, yStart, xStart+180, yStart-20);
+        line(xStart + 160, yStart, xStart+480, yStart-620);
 
 
-        line(xStart + 200, yStart+20, xStart+240, yStart - 10);
+        line(xStart + 200, yStart+20, xStart+540, yStart - 610);
 
 
         pop();
     }
-    if (drumsCounter >76) { // 76
+    if (drumsCounter >0) { // 76
         push();
         stroke(0);
         strokeWeight(3);
         fill(100);
         text(drumsCounter, 10, 20);
-        const xStart = 1500;
+        const xStart = 1300;
         const yStart = 800;
 
-        line(xStart, yStart, xStart+20, yStart-20);
-        line(xStart + 20, yStart, xStart+40, yStart-20);
-        line(xStart + 40, yStart, xStart+60, yStart-20);
+        line(xStart, yStart, xStart+320, yStart-620);
+        line(xStart + 20, yStart, xStart+340, yStart-620);
+        line(xStart + 40, yStart, xStart+360, yStart-620);
 
-        line(xStart + 80, yStart-10, xStart+100, yStart-30);
+        line(xStart + 80, yStart-10, xStart+400, yStart-630);
 
-        line(xStart + 110, yStart+20, xStart+130, yStart);
+        line(xStart + 110, yStart+20, xStart+430, yStart-600);
         
-        line(xStart + 160, yStart-30, xStart+180, yStart-50);
+        line(xStart + 160, yStart-30, xStart+480, yStart-650);
         pop();
     }
 }
