@@ -20,6 +20,7 @@ function preload() {
 
 let canvas;
 let button;
+let buttonTime;
 let drumsFft;
 let bassFft;
 
@@ -31,9 +32,13 @@ function setup() {
     translate(-500, -500);
     // canvas = createCanvas(1920, 1080, WEBGL);
     canvas = createCanvas(1920, 1080);
-    button = createButton('play / pause');
+    button = createButton('play');
     button.position(10, canvas.height + 10);
     button.mousePressed(toggleSong);
+
+    buttonTime = createButton('get time');
+    buttonTime.position(200, canvas.height + 10);
+    buttonTime.mousePressed(printTime);
 
     drumsSound.disconnect();
     chimesSound.disconnect();
@@ -58,15 +63,15 @@ function draw() {
     checkBass();
     checkChimes();
 
-    
+
     // getPeaks();
-    
+
     bass.update();
     bass.show();
-    
+
     drums.update();
     drums.show();
-    
+
     ball_array.forEach(function (ball) {
         ball.update();
         ball.show();
@@ -77,14 +82,14 @@ function draw() {
         violin.update();
         violin.show();
     })
-    
+
     chimesArray.forEach(function (chime) {
         chime.update();
         chime.show();
     })
     chimesArray = chimesArray.filter(chime => chime.x > 0 - chime.r * 2);
     violinArray = violinArray.filter(violin => violin.lifetime > 0);
-    
+
 }
 
 
@@ -103,58 +108,14 @@ function drawViolin() {
     text(drumsCounter, 10, 20);
     pop();
     // 16 32 45 59 77
-    if (drumsCounter === 16 && violinState === 0) { // 15
-        violinArray.push(new Violin(100, 800, 100+320, 800-620));
+    if (drumsCounter === 1 && violinState === 0) { // 15
+        startTime = getMillis();
         violinState++;
     }
-    if (drumsCounter === 31 && violinState === 1) { // 31
-        violinArray.push(new Violin(400, 800, 400+320, 800-620));
-        violinState++;
-    }
-    if (drumsCounter === 44 && violinState === 2) { // 44
-        const xStart = 700;
-        const yStart = 800;
-
-        violinArray.push(new Violin(xStart, yStart, xStart+300, yStart-600));
-        violinArray.push(new Violin(xStart + 20, yStart, xStart+330, yStart-620));
-        violinArray.push(new Violin(xStart + 40, yStart, xStart+360, yStart-620));
-
-        violinArray.push(new Violin(xStart + 80, yStart-10, xStart+400, yStart-630));
-
-        violinArray.push(new Violin(xStart + 110, yStart+20, xStart+530, yStart-600));
-        
-        violinArray.push(new Violin(xStart + 160, yStart-30, xStart+580, yStart-650));
-        violinState++;
-    }
-    if (drumsCounter === 59 && violinState === 3) { // 59
-        const xStart = 1000;
-        const yStart = 800;
-
-        violinArray.push(new Violin(xStart + 40, yStart-10, xStart+360, yStart-630));
-
-        violinArray.push(new Violin(xStart + 80, yStart, xStart+400, yStart-620));
-
-        violinArray.push(new Violin(xStart + 120, yStart-10, xStart+440, yStart-630));
-        
-        violinArray.push(new Violin(xStart + 160, yStart, xStart+480, yStart-620));
-
-
-        violinArray.push(new Violin(xStart + 200, yStart+20, xStart+540, yStart - 610));
-        violinState++;
-    }
-    if (drumsCounter === 76 && violinState === 4) { // 76
-        const xStart = 1300;
-        const yStart = 800;
-
-        violinArray.push(new Violin(xStart, yStart, xStart+320, yStart-620));
-        violinArray.push(new Violin(xStart + 20, yStart, xStart+340, yStart-620));
-        violinArray.push(new Violin(xStart + 40, yStart, xStart+360, yStart-620));
-
-        violinArray.push(new Violin(xStart + 80, yStart-10, xStart+400, yStart-630));
-
-        violinArray.push(new Violin(xStart + 110, yStart+20, xStart+430, yStart-600));
-        
-        violinArray.push(new Violin(xStart + 160, yStart-30, xStart+480, yStart-650));
+    import timings from './timings.json';
+    if (performance.now() - startTime >= timings[violinState - 1].timing) {
+        const violin = timings[violinState - 1];
+        violinArray.push(new Violin(violin.x1, violin.y1, violin.x2, violin.y2));
         violinState++;
     }
 }
@@ -170,7 +131,7 @@ function checkDrums() {
     if (lastClapsVal > clapsValue && time - lastClapsTime > 500) {
         if (lastClapsVal > 100) {
 
-            if(chimesArray.length > 0) {
+            if (chimesArray.length > 0) {
                 // Glockenspiele mit Claps manipulieren.
                 const chimeId = Math.floor(Math.random() * chimesArray.length);
                 chimesArray[chimeId].color = color('#1B2640');
@@ -233,7 +194,67 @@ function checkBass() {
 let lastChimesVal = 0;
 let directionChimes = 1;
 let lastChimesBand = 0;
-const bands = [{band:32,value:230,timestamp: 0},{band:34,value:255,timestamp: 0},{band:40,value:247,timestamp: 0},{band:43,value:255,timestamp: 0},{band:54,value:246,timestamp: 0},{band:58,value:249,timestamp: 0},{band:61,value:249,timestamp: 0},{band:65,value:244,timestamp: 0},{band:68,value:244,timestamp: 0},{band:73,value:245,timestamp: 0},{band:77,value:244,timestamp: 0},{band:82,value:236,timestamp: 0},{band:86,value:234,timestamp: 0},{band:92,value:233,timestamp: 0},{band:97,value:226,timestamp: 0}];
+const bands = [{
+    band: 32,
+    value: 230,
+    timestamp: 0
+}, {
+    band: 34,
+    value: 255,
+    timestamp: 0
+}, {
+    band: 40,
+    value: 247,
+    timestamp: 0
+}, {
+    band: 43,
+    value: 255,
+    timestamp: 0
+}, {
+    band: 54,
+    value: 246,
+    timestamp: 0
+}, {
+    band: 58,
+    value: 249,
+    timestamp: 0
+}, {
+    band: 61,
+    value: 249,
+    timestamp: 0
+}, {
+    band: 65,
+    value: 244,
+    timestamp: 0
+}, {
+    band: 68,
+    value: 244,
+    timestamp: 0
+}, {
+    band: 73,
+    value: 245,
+    timestamp: 0
+}, {
+    band: 77,
+    value: 244,
+    timestamp: 0
+}, {
+    band: 82,
+    value: 236,
+    timestamp: 0
+}, {
+    band: 86,
+    value: 234,
+    timestamp: 0
+}, {
+    band: 92,
+    value: 233,
+    timestamp: 0
+}, {
+    band: 97,
+    value: 226,
+    timestamp: 0
+}];
 
 function checkChimes() {
     let chimesSpectrum = chimesFft.analyze();
@@ -270,6 +291,7 @@ function toggleSong() {
     chimesSound.play();
     setTimeout(function () {
         startTime = getMillis();
+        console.log(startTime);
         drumsSound.play();
         songSound.play();
         bassSound.play();
@@ -286,8 +308,7 @@ function toggleSong() {
 }
 
 function getMillis() {
-    let d = new Date();
-    return d.getTime()
+    return performance.now();
 }
 class Ball {
     constructor(x, y, r = 20) {
@@ -434,7 +455,7 @@ class Chimes {
         }
 
         // clap pulse
-        if(this.clap) {
+        if (this.clap) {
             this.clapVal = 20;
             this.clap = false;
         } else {
@@ -541,4 +562,8 @@ function getPeaks() {
         lastChimesVal = chimesValue;
     });
 
+}
+
+function printTime() {
+    console.log(performance.now() - startTime)
 }
