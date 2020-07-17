@@ -28,6 +28,8 @@ let drums;
 let bassColor;
 
 function setup() {
+    translate(-500, -500);
+    // canvas = createCanvas(1920, 1080, WEBGL);
     canvas = createCanvas(1920, 1080);
     button = createButton('play / pause');
     button.position(10, canvas.height + 10);
@@ -92,19 +94,23 @@ let lastDrumsTime = 0;
 let lastClapsTime = 0;
 let drumsCounter = 0;
 
+let violinState = 0;
+
 function drawViolin() {
     push();
     fill(100);
     text(drumsCounter, 10, 20);
     pop();
     // 16 32 45 59 77
-    if (drumsCounter == 15) { // 15
+    if (drumsCounter === 16 && violinState === 0) { // 15
         violinArray.push(new Violin(100, 800, 100+320, 800-620));
+        violinState++;
     }
-    if (drumsCounter == 31) { // 31
+    if (drumsCounter === 31 && violinState === 1) { // 31
         violinArray.push(new Violin(400, 800, 400+320, 800-620));
+        violinState++;
     }
-    if (drumsCounter == 44) { // 44
+    if (drumsCounter === 44 && violinState === 2) { // 44
         const xStart = 700;
         const yStart = 800;
 
@@ -117,8 +123,9 @@ function drawViolin() {
         violinArray.push(new Violin(xStart + 110, yStart+20, xStart+530, yStart-600));
         
         violinArray.push(new Violin(xStart + 160, yStart-30, xStart+580, yStart-650));
+        violinState++;
     }
-    if (drumsCounter == 59) { // 59
+    if (drumsCounter === 59 && violinState === 3) { // 59
         const xStart = 1000;
         const yStart = 800;
 
@@ -132,8 +139,9 @@ function drawViolin() {
 
 
         violinArray.push(new Violin(xStart + 200, yStart+20, xStart+540, yStart - 610));
+        violinState++;
     }
-    if (drumsCounter == 76) { // 76
+    if (drumsCounter === 76 && violinState === 4) { // 76
         const xStart = 1300;
         const yStart = 800;
 
@@ -146,6 +154,7 @@ function drawViolin() {
         violinArray.push(new Violin(xStart + 110, yStart+20, xStart+430, yStart-600));
         
         violinArray.push(new Violin(xStart + 160, yStart-30, xStart+480, yStart-650));
+        violinState++;
     }
 }
 
