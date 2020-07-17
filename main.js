@@ -83,6 +83,7 @@ function draw() {
         chime.show();
     })
     chimesArray = chimesArray.filter(chime => chime.x > 0 - chime.r * 2);
+    violinArray = violinArray.filter(violin => violin.lifetime > 0);
     
 }
 
