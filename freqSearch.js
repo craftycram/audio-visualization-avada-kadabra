@@ -13,7 +13,7 @@ function preload(){
 function setup() {
   //song.setBuffer([song.buffer.getChannelData(0)]);
   console.log(song);
-  let cnv = createCanvas(2048,200);
+  let cnv = createCanvas(1024,200);
   cnv.mousePressed(makeNoise);
   fill(255, 0, 255);
 
@@ -42,19 +42,19 @@ function draw() {
   //console.log("freq = " + freq + "  res = " + res)
   // draw filtered spectrum
   let spectrum = fft.analyze();
-  //spectrum.splice(100, 1104);
-  //spectrum.splice(0, 25);
+  spectrum.splice(100, 1104);
+  spectrum.splice(0, 25);
   noStroke();
   for (let i = 0; i < spectrum.length; i++) {
     let x = map(i, 0, spectrum.length, 0, width);
     let h = -height + map(spectrum[i], 0, 255, height, 0);
     stroke(0, 0, 0);
-    //strokeWeight(1);
+    strokeWeight(1);
     rect(x, height, width/spectrum.length, h);
-    // push()
-    // fill(255);
-    // text(i+25, x, 160);
-    // pop();
+    push()
+    fill(255);
+    text(i+25, x, 160);
+    pop();
     //console.log(h);
     if(-h > maxHeight){
       maxHeight = -h;
