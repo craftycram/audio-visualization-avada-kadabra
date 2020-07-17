@@ -1,5 +1,8 @@
+
 // Chimes deletion in Konsole testen:
 // setInterval(() => {console.log(chimesArray.length)}, 1000);
+
+const timings = [{"time":7003,"x1":100,"x2":420,"y1":800,"y2":180},{"time":13851,"x1":400,"x2":720,"y1":800,"y2":180},{"time":19502,"x1":700,"x2":1000,"y1":800,"y2":200},{"time":19702,"x1":720,"x2":1030,"y1":800,"y2":180},{"time":19858,"x1":740,"x2":1060,"y1":800,"y2":180},{"time":20351,"x1":780,"x2":1100,"y1":790,"y2":170},{"time":20801,"x1":810,"x2":1230,"y1":820,"y2":200},{"time":26052,"x1":860,"x2":1280,"y1":770,"y2":150},{"time":26306,"x1":1040,"x2":1360,"y1":790,"y2":170},{"time":26556,"x1":1080,"x2":1400,"y1":800,"y2":180},{"time":26850,"x1":1120,"x2":1440,"y1":790,"y2":170},{"time":27301,"x1":1160,"x2":1480,"y1":800,"y2":180},{"time":33301,"x1":1200,"x2":1540,"y1":820,"y2":190},{"time":33501,"x1":1300,"x2":1620,"y1":800,"y2":180},{"time":33650,"x1":1320,"x2":1640,"y1":800,"y2":180},{"time":33800,"x1":1340,"x2":1660,"y1":800,"y2":180},{"time":34205,"x1":1380,"x2":1700,"y1":790,"y2":170},{"time":34967,"x1":1410,"x2":1730,"y1":820,"y2":200},{"time":40000,"x1":1460,"x2":1780,"y1":770,"y2":150}]
 
 let drumsSound
 let bassSound
@@ -101,6 +104,7 @@ let lastClapsTime = 0;
 let drumsCounter = 0;
 
 let violinState = 0;
+let started = false;
 
 function drawViolin() {
     push();
@@ -109,12 +113,10 @@ function drawViolin() {
     pop();
     // 16 32 45 59 77
     if (drumsCounter === 1 && violinState === 0) { // 15
-        startTime = getMillis();
-        violinState++;
+        started = true;
     }
-    import timings from './timings.json';
-    if (performance.now() - startTime >= timings[violinState - 1].timing) {
-        const violin = timings[violinState - 1];
+    if (performance.now() - startTime >= timings[violinState].time && started) {
+        const violin = timings[violinState];
         violinArray.push(new Violin(violin.x1, violin.y1, violin.x2, violin.y2));
         violinState++;
     }
