@@ -67,13 +67,15 @@ function draw() {
         ball.update();
         ball.show();
     })
+
+    drawViolin();
+    
     chimesArray.forEach(function (chime) {
         chime.update();
         chime.show();
     })
     chimesArray = chimesArray.filter(chime => chime.x > 0 - chime.r * 2);
     
-    drawViolin();
 }
 
 
