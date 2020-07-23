@@ -40,9 +40,11 @@ function setup() {
     button.position(10, canvas.height + 10);
     button.mousePressed(toggleSong);
 
+    /*
     buttonTime = createButton('get time');
     buttonTime.position(200, canvas.height + 10);
     buttonTime.mousePressed(printTime);
+    */
 
     drumsSound.disconnect();
     chimesSound.disconnect();
