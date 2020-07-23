@@ -107,10 +107,10 @@ let violinState = 0;
 let started = false;
 
 function drawViolin() {
-    push();
+    /*push();
     fill(100);
     text(drumsCounter, 10, 20);
-    pop();
+    pop();*/
     // 16 32 45 59 77
     if (drumsCounter === 1 && violinState === 0) { // 15
         started = true;
