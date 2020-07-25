@@ -196,77 +196,105 @@ function checkBass() {
     lastBassVal = bassValue;
 }
 
-let lastChimesVal = 0;
-let directionChimes = 1;
 let lastChimesBand = 0;
 const bands = [{
     band: 32,
     value: 230,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 34,
     value: 255,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 40,
     value: 247,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 43,
     value: 255,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 54,
     value: 246,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 58,
     value: 249,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 61,
     value: 249,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 65,
     value: 244,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 68,
     value: 244,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 73,
     value: 245,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 77,
     value: 244,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 82,
     value: 236,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 86,
     value: 234,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 92,
     value: 233,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }, {
     band: 97,
     value: 226,
-    timestamp: 0
+    timestamp: 0,
+    dir: 1,
+    lastVal: 0
 }];
 
 function checkChimes() {
     let chimesSpectrum = chimesFft.analyze();
     bands.forEach(element => {
         let chimesValue = chimesSpectrum[element.band];
-        if (lastChimesVal > chimesValue && lastChimesBand !== element.band) {
-            if (directionChimes > 0 && lastChimesVal > element.value - 10 && getMillis() - element.timestamp > 200) {
+        if (element.lastVal > chimesValue && lastChimesBand !== element.band) {
+            if (element.dir > 0 && element.lastVal > element.value - 10 && getMillis() - element.timestamp > 200) {
                 element.timestamp = getMillis();
                 lastChimesBand = element.band;
                 const yArea = 500;
@@ -276,12 +304,12 @@ function checkChimes() {
                 chimesArray.push(chime);
             }
 
-            directionChimes = -1;
+            element.dir = -1;
         } else {
-            directionChimes = 1;
+            element.dir = 1;
         }
 
-        lastChimesVal = chimesValue;
+        element.lastVal = chimesValue;
     });
 
 }
